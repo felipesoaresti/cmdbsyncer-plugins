@@ -73,3 +73,6 @@ test_*.py
 *.tmp
 *.temp
 .cache/
+
+# Claude Code
+CLAUDE.md
