@@ -76,3 +76,7 @@ test_*.py
 
 # Claude Code
 CLAUDE.md
+
+# Documentation files
+CHANGELOG.md
+CONTRIBUTING.md
