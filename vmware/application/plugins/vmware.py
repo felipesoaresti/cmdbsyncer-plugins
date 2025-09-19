@@ -4,7 +4,13 @@
 import click
 import json
 import csv
+import sys
 from datetime import datetime
+
+try:
+    from pyVmomi import vim
+except ImportError:
+    vim = None
 
 from application.modules.rule.rewrite import Rewrite
 from application.modules.vmware.models import (
