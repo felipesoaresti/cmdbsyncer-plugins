@@ -111,8 +111,8 @@ vmware-rest/
 Name: meu-vcenter
 Type: vmware_vcenter
 Address: vcenter.exemplo.com
-Username: usuario\serviceaccount
-Password: suasenhaaqui
+Username: DOMINIO\USUARIO
+Password: SUA_SENHA_AQUI
 
 Custom Fields:
   inventorize_key: vmware_vcenter
