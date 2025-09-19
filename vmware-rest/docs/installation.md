@@ -2,18 +2,18 @@
 
 Este guia explica como instalar e configurar o plugin VMware REST API no CMDBSyncer.
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 ### Sistema
-- **CMDBSyncer**: Versão 3.10.2 ou superior
-- **Python**: 3.11 ou superior
-- **Sistema Operacional**: Linux (testado em Red Hat/CentOS)
-- **Permissões**: Acesso root ou sudo no servidor CMDBSyncer
+- CMDBSyncer: Versão 3.10.2 ou superior
+- Python: 3.11 ou superior
+- Sistema Operacional: Linux (testado em Red Hat/CentOS)
+- Permissões: Acesso root ou sudo no servidor CMDBSyncer
 
 ### Rede e Acesso
-- **Conectividade**: HTTPS (porta 443) para o vCenter
-- **Certificados**: Suporte a certificados auto-assinados
-- **Credenciais**: Conta de serviço no vCenter com permissões de leitura
+- Conectividade: HTTPS (porta 443) para o vCenter
+- Certificados: Suporte a certificados auto-assinados
+- Credenciais: Conta de serviço no vCenter com permissões de leitura
 
 ### Dependências Python
 O plugin utiliza bibliotecas já incluídas no CMDBSyncer:
@@ -21,7 +21,7 @@ O plugin utiliza bibliotecas já incluídas no CMDBSyncer:
 - `urllib3` - Para gerenciamento de conexões SSL
 - `click` - Para interface de linha de comando
 
-## 🛠️ Instalação Passo a Passo
+## Instalação Passo a Passo
 
 ### 1. Localize o Diretório do CMDBSyncer
 
@@ -36,7 +36,7 @@ source ENV/bin/activate
 ./cmdbsyncer --help
 ```
 
-**Possíveis localizações:**
+Possíveis localizações:
 - `/var/www/cmdbsyncer` (instalação padrão)
 - `/srv/cmdbsyncer` (algumas distribuições)
 - `/opt/cmdbsyncer` (instalação customizada)
@@ -90,7 +90,7 @@ pkill -f cmdbsyncer
 # Depois reinicie conforme sua configuração
 ```
 
-## ✅ Verificação da Instalação
+## Verificação da Instalação
 
 ### 1. Teste os Comandos
 
@@ -120,7 +120,7 @@ Na interface web do CMDBSyncer:
    - `VMware REST: Import VMs`
    - `VMware REST: Inventorize VMs`
 
-## 🔧 Configuração Inicial
+## Configuração Inicial
 
 ### 1. Configurar SSL Global
 
@@ -143,7 +143,7 @@ chown cmdbsyncer:cmdbsyncer /var/www/cmdbsyncer/application/plugins/vmware_rest_
 chmod 644 /var/www/cmdbsyncer/application/plugins/vmware_rest_api.py
 ```
 
-## 🐳 Instalação em Docker
+## Instalação em Docker
 
 Se usar CMDBSyncer em Docker:
 
@@ -161,7 +161,7 @@ cd /srv/cmdbsyncer/application/plugins/
 ./cmdbsyncer vmware_rest --help
 ```
 
-## 🔍 Troubleshooting da Instalação
+## Troubleshooting da Instalação
 
 ### Problema: Comando não encontrado
 
@@ -207,16 +207,16 @@ pkill -f "python.*cmdbsyncer"
 vim application/config.py
 ```
 
-## 📝 Próximos Passos
+## Próximos Passos
 
 Após a instalação bem-sucedida:
 
-1. **Configure uma conta VMware**: Veja [`configuration.md`](configuration.md)
-2. **Execute a primeira importação**: Veja [`usage.md`](usage.md)
-3. **Configure automação**: Defina cron jobs
-4. **Monitore via interface web**: Acompanhe a sincronização
+1. Configure uma conta VMware: Veja [`configuration.md`](configuration.md)
+2. Execute a primeira importação: Veja [`usage.md`](usage.md)
+3. Configure automação: Defina cron jobs
+4. Monitore via interface web: Acompanhe a sincronização
 
-## 📞 Suporte
+## Suporte
 
 Se encontrar problemas:
 
@@ -225,7 +225,7 @@ Se encontrar problemas:
 3. Consulte [`troubleshooting.md`](troubleshooting.md)
 4. Abra uma issue no GitHub: [Issues](https://github.com/felipesoaresti/cmdbsyncer-plugins/issues)
 
-## 🔄 Atualizações
+## Atualizações
 
 Para atualizar o plugin:
 

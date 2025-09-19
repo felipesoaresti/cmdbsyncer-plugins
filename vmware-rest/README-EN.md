@@ -2,62 +2,58 @@
 
 Custom plugin for integration with VMware vCenter using native REST API, enabling import and synchronization of virtual machines in CMDBSyncer.
 
-## 🎯 Objective
+## Objective
 
 This plugin was developed for organizations that need to synchronize VM information from VMware vCenter with CMDBSyncer, using exclusively the vCenter REST API (no pyVmomi dependencies).
 
-## ✨ Features
+## Features
 
-### 🔄 VM Import
+### VM Import
 - Connects to vCenter via REST API (`/api/session`)
 - Fetches all VMs via `/api/vcenter/vm` endpoint
 - Creates hosts in CMDBSyncer with basic information
 - Self-signed certificate support
 
-### 📊 Detailed Inventorization
+### Detailed Inventorization
 - Collects detailed data from each VM
 - Guest OS information (hostname, IP, operating system)
 - VMware Tools status
 - UUID and technical configurations
 
-### 🕐 Automation
+### Automation
 - Cron job system integration
 - Programmable automatic synchronization
 - Detailed execution logs
 
-## 📋 Requirements
+## Requirements
 
-- **CMDBSyncer**: 3.10.2 or higher
-- **Python**: 3.11+
-- **Libraries**: requests, urllib3 (already included in CMDBSyncer)
-- **Access**: Account with read permissions on vCenter
-- **Network**: HTTPS connectivity with vCenter (port 443)
+- CMDBSyncer: 3.10.2 or higher
+- Python: 3.11+
+- Libraries: requests, urllib3 (already included in CMDBSyncer)
+- Access: Account with read permissions on vCenter
+- Network: HTTPS connectivity with vCenter (port 443)
 
-## 🏗️ Architecture
+## Architecture
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   vCenter API   │◄──►│  Plugin Python  │◄──►│   CMDBSyncer    │
-│  (REST/HTTPS)   │    │ vmware_rest_api │    │    Database     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                ▲
-                                │
-                         ┌─────────────┐
-                         │ Cron Jobs   │
-                         │ Automation  │
-                         └─────────────┘
+vCenter API     <-->     Plugin Python     <-->     CMDBSyncer
+(REST/HTTPS)             vmware_rest_api             Database
+                              ^
+                              |
+                         Cron Jobs
+                         Automation
 ```
 
-## 🚀 Quick Installation
+## Quick Installation
 
-1. **Copy the plugin** to CMDBSyncer server
-2. **Configure VMware account** in web interface
-3. **Run initial import**
-4. **Configure cron jobs** for automatic synchronization
+1. Copy the plugin to CMDBSyncer server
+2. Configure VMware account in web interface
+3. Run initial import
+4. Configure cron jobs for automatic synchronization
 
 See detailed guide in [`docs/installation-EN.md`](docs/installation-EN.md)
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 vmware-rest/
@@ -74,7 +70,7 @@ vmware-rest/
     └── configurations.md       # Configuration examples
 ```
 
-## 🎮 Main Commands
+## Main Commands
 
 ```bash
 # Import VMs (first run)
@@ -87,23 +83,23 @@ vmware-rest/
 ./cmdbsyncer vmware_rest import_vms account-name --debug
 ```
 
-## 📊 Collected Data
+## Collected Data
 
 ### Labels (Basic import)
-- **vm_id**: Internal VM identifier
-- **power_state**: VM state (POWERED_ON/OFF)
-- **cpu_count**: Number of virtual CPUs
-- **memory_size_gb**: Memory in GB
-- **vmware_source**: Data origin
+- vm_id: Internal VM identifier
+- power_state: VM state (POWERED_ON/OFF)
+- cpu_count: Number of virtual CPUs
+- memory_size_gb: Memory in GB
+- vmware_source: Data origin
 
 ### Inventory (Detailed data)
-- **guest_hostname**: Operating system hostname
-- **guest_ip**: Primary IP address
-- **guest_os**: Detected operating system
-- **tools_status**: VMware Tools status
-- **vm_uuid**: Unique VM UUID
+- guest_hostname: Operating system hostname
+- guest_ip: Primary IP address
+- guest_os: Detected operating system
+- tools_status: VMware Tools status
+- vm_uuid: Unique VM UUID
 
-## 🔧 Configuration
+## Configuration
 
 ### VMware Account in CMDBSyncer
 
@@ -119,12 +115,12 @@ Custom Fields:
   hostname_field: name
 ```
 
-## 📈 Monitoring
+## Monitoring
 
 ### Web Interface
-- **Hosts → Hosts**: View imported VMs
-- **Jobs → Cron Stats**: Synchronization status
-- **Dashboard**: General statistics
+- Hosts → Hosts: View imported VMs
+- Jobs → Cron Stats: Synchronization status
+- Dashboard: General statistics
 
 ### Command Line
 ```bash
@@ -135,27 +131,27 @@ Custom Fields:
 tail -f /var/log/cmdbsyncer/cmdbsyncer.log
 ```
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
-- **SSL Error**: Configure `DISABLE_SSL_ERRORS = True`
-- **Credentials**: Verify username and password
-- **Connectivity**: Test HTTPS access to vCenter
+- SSL Error: Configure `DISABLE_SSL_ERRORS = True`
+- Credentials: Verify username and password
+- Connectivity: Test HTTPS access to vCenter
 
 See complete guide in [`docs/troubleshooting.md`](docs/troubleshooting.md)
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the project
 2. Create your feature branch
 3. Commit your changes
 4. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is under the MIT license. See [`LICENSE`](../LICENSE) for details.
 
-## 🔗 Useful Links
+## Useful Links
 
 - [CMDBSyncer Documentation](https://docs.cmdbsyncer.de)
 - [VMware vCenter API Reference](https://developer.vmware.com/apis/vsphere-automation/latest/)
