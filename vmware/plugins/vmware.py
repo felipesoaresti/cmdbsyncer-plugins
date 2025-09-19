@@ -156,6 +156,11 @@ def test_vmware_connection(account, debug=False):
         # Testar coleta de VMs
         print("2. Testando coleta de VMs...")
         content = vm.vcenter.RetrieveContent()
+
+        if vim is None:
+            print("   ❌ Erro: pyVmomi não está disponível")
+            return
+
         container = content.viewManager.CreateContainerView(
             content.rootFolder, [vim.VirtualMachine], True
         )

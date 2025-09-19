@@ -96,10 +96,12 @@ class VMwareCustomAttributesPlugin(VMWareVcenterPlugin):
             logger.debug(f"Erro ao coletar tags para VM {vm_id}: {e}")
         return []
 
-    def get_vm_folder_hierarchy(self, vm, max_depth=9):
+    def get_vm_folder_hierarchy(self, vm, max_depth=None):
         """
         Coletar hierarquia completa de folders da VM
         """
+        if max_depth is None:
+            max_depth = self.get_custom_setting('max_folder_depth', 9)
         vm_folders = []
         try:
             parent_obj = vm
@@ -130,7 +132,7 @@ class VMwareCustomAttributesPlugin(VMWareVcenterPlugin):
 
         # Coletar tags (se habilitado na configuração)
         vm_tags = []
-        collect_tags = self.config.get('settings', {}).get('collect_tags', False)
+        collect_tags = self.get_custom_setting('collect_tags', False)
         if collect_tags and vm.config:
             vm_tags = self.get_vm_tags(vm.config.instanceUuid)
 
@@ -141,6 +143,9 @@ class VMwareCustomAttributesPlugin(VMWareVcenterPlugin):
             "tags": vm_tags,
         }
 
+        # Usar summary para acessar campos específicos (como no getallvmscols.py)
+        summary = vm.summary
+
         # Informações do Guest
         if vm.guest:
             attributes.update({
@@ -150,18 +155,23 @@ class VMwareCustomAttributesPlugin(VMWareVcenterPlugin):
                 "tools_status": str(vm.guest.toolsStatus) if vm.guest.toolsStatus else "",
             })
 
-        # Informações de Configuração
+        # Informações de Configuração (usando summary.config para compatibilidade)
+        if summary.config:
+            attributes.update({
+                "guest_os": summary.config.guestFullName or "",
+                "uuid": summary.config.uuid or "",
+                "guest_id": summary.config.guestId or "",
+                "annotation": summary.config.annotation or "",
+                "is_template": summary.config.template,
+                "vm_path_name": summary.config.vmPathName or "",
+                "instance_uuid": summary.config.instanceUuid or "",
+            })
+
+        # Informações adicionais do vm.config (se disponível)
         if vm.config:
             attributes.update({
                 "cpu_count": vm.config.hardware.numCPU,
                 "memory_mb": vm.config.hardware.memoryMB,
-                "guest_os": vm.config.guestFullName or "",
-                "uuid": vm.config.uuid or "",
-                "guest_id": vm.config.guestId or "",
-                "annotation": vm.config.annotation or "",
-                "is_template": vm.config.template,
-                "vm_path_name": vm.config.vmPathName or "",
-                "instance_uuid": vm.config.instanceUuid or "",
             })
 
         # Informações de Runtime
@@ -179,6 +189,22 @@ class VMwareCustomAttributesPlugin(VMWareVcenterPlugin):
                 "runtime_host": vm.runtime.host,
                 "boot_time": vm.runtime.bootTime,
                 "esxi_host_name": esxi_host_name,
+            })
+
+        # Usar summary.runtime para informações adicionais se necessário
+        if summary.runtime:
+            if not attributes.get("power_state"):
+                attributes["power_state"] = str(summary.runtime.powerState) if summary.runtime.powerState else ""
+            if not attributes.get("esxi_host_name") and summary.runtime.host:
+                try:
+                    attributes["esxi_host_name"] = summary.runtime.host.name
+                except:
+                    pass
+
+        # Usar summary.guest para informações do guest se não obtidas acima
+        if summary.guest and not attributes.get("ip_address"):
+            attributes.update({
+                "ip_address": summary.guest.ipAddress or "",
             })
 
         # Informações de Rede
@@ -223,7 +249,7 @@ class VMwareCustomAttributesPlugin(VMWareVcenterPlugin):
         """
         # Verificar configuração para incluir templates
         if include_templates is None:
-            include_templates = self.config.get('settings', {}).get('include_templates', False)
+            include_templates = self.get_custom_setting('include_templates', False)
 
         content = self.vcenter.RetrieveContent()
         container = content.viewManager.CreateContainerView(
