@@ -63,6 +63,14 @@ credentials.json
 *.key
 *.pem
 *.crt
+*.password
+*.passwd
+*credentials*
+*secret*
+.env.local
+.env.production
+*config.local*
+account_*.md
 
 # Test files
 test_config.py
@@ -82,7 +90,6 @@ CHANGELOG.md
 CONTRIBUTING.md
 CHANGELOG-EN.md
 CONTRIBUTING-EN.md
-ACCOUNT-GUI.md
 ANALISE.md
-IMPLEMENTACAO.md
+
 
