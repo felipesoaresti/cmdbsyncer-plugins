@@ -31,6 +31,28 @@ class VMwareCustomAttributesPlugin(VMWareVcenterPlugin):
     console = None
     container_view = None
 
+    def get_custom_setting(self, setting_name, default_value=None):
+        """
+        Obter configuração customizada da conta via custom_fields
+        """
+        custom_fields = self.config.get('custom_fields', [])
+
+        # Procurar pela configuração nos custom_fields
+        for field in custom_fields:
+            if field.get('name') == setting_name:
+                value = field.get('value', default_value)
+                # Converter string para tipos apropriados
+                if isinstance(value, str):
+                    if value.lower() in ('true', '1', 'yes', 'on'):
+                        return True
+                    elif value.lower() in ('false', '0', 'no', 'off'):
+                        return False
+                    elif value.isdigit():
+                        return int(value)
+                return value
+
+        return default_value
+
     def get_vm_tags(self, vm_id):
         """
         Coletar tags VMware usando REST API
