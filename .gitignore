@@ -82,9 +82,6 @@ test_*.py
 *.temp
 .cache/
 
-# Claude Code
-CLAUDE.md
-
 # Documentation files
 CHANGELOG.md
 CONTRIBUTING.md
